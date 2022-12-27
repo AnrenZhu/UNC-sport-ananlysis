@@ -1,0 +1,72 @@
+---
+title: "sport analysis"
+author: "Anren Zhu"
+date: "2022-12-24"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+
+```
+
+
+```{r}
+
+cbb17 <- read_csv("cbb17.csv")
+
+summary(cbb17)
+```
+
+```{r}
+
+data17 <- select(cbb17,c("TEAM","SEED","W","G","ADJOE","ADJDE","EFG_O","ORB","FTR","BARTHAG")) 
+
+data17 <- transform(data17, per=W/G)
+
+
+M <- cor(data17[3:11])
+corrplot::corrplot(M, tl.srt = 60,tl.col = "black")
+```
+
+```{r}
+boxplot(data17[,3:9])
+```
+```{r}
+fit16 <- lm(W~data17$"SEED",data = data17)
+summary(fit16)
+fitted(fit16)
+residuals(fit16)
+plot(fit16)
+```
+
+```{r}
+fit17 <- lm(W~data17$per,data = data17)
+summary(fit17)
+fitted(fit17)
+residuals(fit17)
+plot(fit17)
+```
+
+```{r}
+fit18 <- lm(W~data17$"BARTHAG",data = data17)
+summary(fit18)
+fitted(fit18)
+residuals(fit18)
+plot(fit18)
+```
+
+
+```{r}
+fit19 <- lm(W~data17$ADJOE+data17$ADJDE+data17$EFG_O+data17$ORB+data17$FTR,data = data17)
+summary(fit19)
+fitted(fit19)
+residuals(fit19)
+plot(fit19)
+```
+
+
